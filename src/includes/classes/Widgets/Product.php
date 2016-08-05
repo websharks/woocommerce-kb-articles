@@ -1,6 +1,6 @@
 <?php
 /**
- * Search widget.
+ * Product widget.
  *
  * @author @jaswsinc
  * @copyright WP Sharks™
@@ -29,28 +29,28 @@ use function assert as debug;
 use function get_defined_vars as vars;
 
 /**
- * Search widget.
+ * Product widget.
  *
- * @since 160731.38548 Initial release.
+ * @since 160801 Product widget.
  */
-class Search extends SCoreClasses\SCore\Base\Widget
+class Product extends SCoreClasses\SCore\Base\Widget
 {
     /**
      * Class constructor.
      *
-     * @since 160731.38548 Initial release.
+     * @since 160801 Product widget.
      */
     public function __construct()
     {
         $App  = c::app();
         $args = [
-            'slug'        => 'search',
-            'class'       => 'widget_search',
-            'name'        => __('KB: Article Search', 'woocommerce-kb-articles'),
-            'description' => __('Search box for KB articles.', 'woocommerce-kb-articles'),
+            'slug'        => 'product',
+            'class'       => 'woocommerce widget_products',
+            'name'        => __('KB: Back to Product', 'woocommerce-kb-articles'),
+            'description' => __('Link back to current KB product page.', 'woocommerce-kb-articles'),
         ];
         $default_options = [
-            // No default options yet.
+            // None at this time.
         ];
         parent::__construct($App, $args, $default_options);
     }
@@ -58,7 +58,7 @@ class Search extends SCoreClasses\SCore\Base\Widget
     /**
      * Outputs the options form on admin.
      *
-     * @since 160731.38548 Initial release.
+     * @since 160801 Product widget.
      *
      * @param SCoreClasses\SCore\WidgetForm $Form    Instance.
      * @param array                         $options Options.
@@ -67,13 +67,13 @@ class Search extends SCoreClasses\SCore\Base\Widget
      */
     protected function formContent(SCoreClasses\SCore\WidgetForm $Form, array $options): string
     {
-        return $markup = ''; // Nothing here for now.
+        return $markup = '';
     }
 
     /**
      * Widget content markup.
      *
-     * @since 160731.38548 Initial release.
+     * @since 160801 Product widget.
      *
      * @param array $options Options.
      *
@@ -81,13 +81,23 @@ class Search extends SCoreClasses\SCore\Base\Widget
      */
     protected function widgetContent(array $options): string
     {
-        $markup = '<form role="search" method="get" class="search-form" action="'.esc_url(get_post_type_archive_link('kb_article')).'">';
-        $markup .=   '<label>';
-        $markup .=       '<span class="screen-reader-text">'.__('Search KB Articles:', 'woocommerce-kb-articles').'</span>';
-        $markup .=       '<input type="search" name="s" class="search-field" value="'.esc_attr(get_search_query()).'" placeholder="'._('Search KB Articles &hellip;').'" />';
-        $markup .=   '</label>';
-        $markup .=   '<input type="submit" class="search-submit" value="'.__('Search', 'woocommerce-kb-articles').'" />';
-        $markup .= '</form>';
+        if (!is_singular('kb_article') && !is_post_type_archive('kb_article')) {
+            return ''; // Not applicable.
+        } elseif (!($product_id = s::wcProductIdBySlug((string) get_query_var('kb_product')))) {
+            return ''; // Not possible; unable to acquire ID.
+        } elseif (!($WC_Product = wc_get_product($product_id)) || !$WC_Product->exists()) {
+            return ''; // Not possible; unable to acquire product.
+        }
+        $markup = ''; // Initialize markup.
+
+        $markup .= '<ul class="product_list_widget">';
+        $markup .=      '<li>';
+        $markup .=          '<a href="'.esc_url(get_permalink($WC_Product->get_id())).'" title="'.esc_attr($WC_Product->get_title()).'">';
+        $markup .=              $WC_Product->get_image().'<span class="product-title">'.$WC_Product->get_title().'</span>';
+        $markup .=          '</a>';
+        $markup .=          '<i class="fa fa-shopping-cart"></i> '.$WC_Product->get_price_html();
+        $markup .=      '</li>';
+        $markup .= '</ul>';
 
         return $markup;
     }
