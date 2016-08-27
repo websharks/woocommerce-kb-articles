@@ -73,9 +73,6 @@ $border-color: rgba(0, 0, 0, 0.05);
 .post-type-archive-#{$post-type}:not(#x) {
   #content #primary {
     .page-header {
-      margin-bottom:          1em;
-      border-bottom:          1px solid $border-color;
-
       .page-title {
         .-s {
           line-height:        1.5;
@@ -98,15 +95,16 @@ $border-color: rgba(0, 0, 0, 0.05);
           margin:             0;
           padding:            0;
           border:             0;
+          line-height:        1;
           font-size:          1.8em;
 
           > .entry-modified {
-            opacity:          0.75;
             font-size:       .5em;
-            margin-top:      .5em;
+            opacity:          0.75;
             float:            right;
             font-weight:      normal;
             cursor:           default;
+            margin:          .5em 0 0 3em;
 
             > time {
               font-weight:    bold;
@@ -118,12 +116,6 @@ $border-color: rgba(0, 0, 0, 0.05);
           }
 
           > a {
-            width:            70%;
-            white-space:      nowrap;
-            text-overflow:    ellipsis;
-            overflow:         hidden;
-            display:          inline-block;
-
             .fa {
               opacity:        0.25;
               text-decoration: none;
@@ -144,7 +136,7 @@ $border-color: rgba(0, 0, 0, 0.05);
       .entry-content {
         opacity:              0.5;
         font-size:           .85em;
-        margin:               0 0 0 .25em;
+        margin:              .5em 0 0 .25em;
 
         > p {
           margin:             0;

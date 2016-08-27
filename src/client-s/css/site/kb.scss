@@ -30,9 +30,12 @@ $border-color: rgba(0, 0, 0, 0.05);
 
     .-list-item {
       width:                  100%;
-      white-space:            nowrap;
-      text-overflow:          ellipsis;
-      overflow:               hidden;
+
+      &:not(.-article) {
+        white-space:          nowrap;
+        text-overflow:        ellipsis;
+        overflow:             hidden;
+      }
 
       .fa {
         opacity:              0.25;
@@ -49,14 +52,14 @@ $border-color: rgba(0, 0, 0, 0.05);
   }
 
   .-search-box {
-    font-size:               .75em;
+    font-size:               .85em;
 
     &.--top {
-      margin:                 0 0 1em;
+      margin:                 0 0 2em;
     }
 
     &.--bottom {
-      margin:                 1em 0 0;
+      margin:                 2em 0 0;
     }
 
     .-form {
@@ -95,12 +98,20 @@ $border-color: rgba(0, 0, 0, 0.05);
       .-title {
         margin:               0;
         padding:              0;
+        line-height:          1;
+        width:                100%;
+
+        &.-one-line {
+          white-space:        nowrap;
+          text-overflow:      ellipsis;
+          overflow:           hidden;
+        }
       }
 
       .-excerpt {
         opacity:              0.5;
         font-size:           .85em;
-        margin:               0 0 0 .25em;
+        margin:              .5em 0 0 .25em;
 
         > p {
           margin:             0;

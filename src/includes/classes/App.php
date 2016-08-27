@@ -42,7 +42,7 @@ class App extends SCoreClasses\App
      *
      * @var string Version.
      */
-    const VERSION = '160805.29085'; //v//
+    const VERSION = '160827.7973'; //v//
 
     /**
      * Constructor.
@@ -228,7 +228,6 @@ class App extends SCoreClasses\App
         $product_tab_content_filters = s::getOption('product_tab_content_filters');
 
         if (in_array('jetpack-markdown', $product_tab_content_filters, true) && s::jetpackCanMarkdown()) {
-            s::addFilter('product_tab_content', c::class.'::stripLeadingIndents', -10000);
             s::addFilter('product_tab_content', s::class.'::jetpackMarkdown', -10000);
         }
         if (in_array('jetpack-latex', $product_tab_content_filters, true) && s::jetpackCanLatex()) {

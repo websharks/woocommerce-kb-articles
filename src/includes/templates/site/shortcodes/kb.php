@@ -36,7 +36,7 @@ extract($this->vars); // Template variables.
     <?php if ($atts['show_search_box'] === 'top') : ?>
         <div class="-search-box --top">
             <form role="search" method="get" class="-form" action="<?= esc_url(get_post_type_archive_link('kb_article')); ?>" target="<?= esc_attr($atts['search_link_target']); ?>">
-                <input type="search" name="s" class="-s" value="<?= esc_attr(get_search_query()); ?>" placeholder="<?= _('🔎 Search KB Articles &hellip;'); ?>" />
+                <input type="search" name="s" class="-s" value="<?= esc_attr(get_search_query()); ?>" placeholder="<?= _('🔎  Search KB Articles &hellip;'); ?>" />
             </form>
         </div>
     <?php endif; ?>
@@ -48,7 +48,7 @@ extract($this->vars); // Template variables.
                     <h4><?= __('Categories', 'woocommerce-kb-articles'); ?></h4>
                     <ul class="-list">
                         <?php foreach ($categories as $_WP_Term) : ?>
-                            <li class="-list-item -category">
+                            <li class="-list-item -category" title="<?= esc_attr($_WP_Term->name); ?>">
                                 <i class="fa fa-folder"></i> <a href="<?= esc_url(get_term_link($_WP_Term->term_id, $_WP_Term->taxonomy)); ?>" target="<?= esc_attr($atts['tax_link_target']); ?>"><?= $_WP_Term->name; ?></a>
                             </li>
                         <?php endforeach; ?>
@@ -61,7 +61,7 @@ extract($this->vars); // Template variables.
                     <h4><?= __('Tags', 'woocommerce-kb-articles'); ?></h4>
                     <ul class="-list">
                         <?php foreach ($tags as $_WP_Term) : ?>
-                            <li class="-list-item -tag">
+                            <li class="-list-item -tag" title="<?= esc_attr($_WP_Term->name); ?>">
                                 <a href="<?= esc_url(get_term_link($_WP_Term->term_id, $_WP_Term->taxonomy)); ?>" target="<?= esc_attr($atts['tax_link_target']); ?>">
                                     <i class="fa fa-tag"></i> <?= $_WP_Term->name; ?>
                                 </a>
@@ -78,12 +78,14 @@ extract($this->vars); // Template variables.
             <ul class="-list">
                 <?php while ($WP_Query->have_posts()) : $WP_Query->the_post(); ?>
                     <li class="-list-item -article">
-                        <h4 class="-title">
+                        <h4 class="-title<?= $atts['one_line_titles'] ? ' -one-line' : ''; ?>" title="<?= esc_attr(get_the_title()); ?>">
                             <i class="fa fa-file-text"></i> <a href="<?= esc_url(get_permalink()); ?>" target="<?= esc_attr($atts['link_target']); ?>"><?= get_the_title(); ?></a>
                         </h4>
-                        <div class="-excerpt">
-                            <?php the_excerpt(); ?>
-                        </div>
+                        <?php if ($atts['show_excerpts']) : ?>
+                            <div class="-excerpt">
+                                <?php the_excerpt(); ?>
+                            </div>
+                        <?php endif; ?>
                     </li>
                 <?php endwhile; ?>
             </ul>
@@ -101,7 +103,7 @@ extract($this->vars); // Template variables.
     <?php if ($atts['show_search_box'] === 'bottom') : ?>
         <div class="-search-box --bottom">
             <form role="search" method="get" class="-form" action="<?= esc_url(get_post_type_archive_link('kb_article')); ?>" target="<?= esc_attr($atts['search_link_target']); ?>">
-                <input type="search" name="s" class="-s" value="<?= esc_attr(get_search_query()); ?>" placeholder="<?= _('🔎 Search KB Articles &hellip;'); ?>" />
+                <input type="search" name="s" class="-s" value="<?= esc_attr(get_search_query()); ?>" placeholder="<?= _('🔎  Search KB Articles &hellip;'); ?>" />
             </form>
         </div>
     <?php endif; ?>
