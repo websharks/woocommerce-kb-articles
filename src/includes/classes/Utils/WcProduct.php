@@ -65,12 +65,18 @@ class WcProduct extends SCoreClasses\SCore\Base\Core
      */
     public function onInit()
     {
-        WC()->query->query_vars['kb'] = $this->permalink_options['product_endpoint'];
-        add_rewrite_endpoint($this->permalink_options['product_endpoint'], EP_PERMALINK);
+        // This runs after `WC_Query:add_endpoints()` on purpose.
+        // WooCommerce adds endpoints using `EP_PAGE`, but these use `EP_PERMALINK`.
 
-        add_filter('woocommerce_endpoint_kb_title', function () {
-            return __('Knowledge Base', 'woocommerce-kb-articles');
-        });
+        // Must use dashes to avoid conflicting w/ query vars in KB articles themselves.
+        // Title filters are not necessary because each of these are redirects.
+
+        $WC_Query                           = WC()->query;
+        $WC_Query->query_vars['kb']         = $this->permalink_options['product_base_endpoint'];
+        $WC_Query->query_vars['kb-article'] = $this->permalink_options['product_article_endpoint'];
+
+        add_rewrite_endpoint($WC_Query->query_vars['kb'], EP_PERMALINK);
+        add_rewrite_endpoint($WC_Query->query_vars['kb-article'], EP_PERMALINK);
     }
 
     /**
@@ -105,9 +111,7 @@ class WcProduct extends SCoreClasses\SCore\Base\Core
             $tab_content = s::getOption('product_tab_default_content');
         } // Only use default value if no meta values exist yet.
 
-        $tab_content = s::applyFilters('product_tab_content', $tab_content);
-
-        if (!$tab_content || !is_string($tab_content)) {
+        if (!($tab_content = (string) s::applyFilters('product_tab_content', $tab_content))) {
             return $tabs; // If empty, do not show.
         }
         $tabs['kb'] = [

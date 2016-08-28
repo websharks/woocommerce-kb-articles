@@ -1,6 +1,6 @@
 === WP Sharks WooCommerce KB Articles ===
 
-Stable tag: 160827.7973
+Stable tag: 160828.49551
 
 Tested up to: 4.6
 Requires at least: 4.5.3
