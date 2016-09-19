@@ -1,3 +1,8 @@
+## v160919.20254
+
+- Article icon more opaque.
+- Short slug/var changed to `wp_kb`.
+
 ## v160828.49551
 
 - New Facade for developers: `a::articleUrl()` (by slug).
